@@ -1,4 +1,6 @@
+import 'package:fake_shop/providers/shoppingCart.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Singleitem extends StatefulWidget {
   final title, price, category, image;
@@ -11,6 +13,8 @@ class Singleitem extends StatefulWidget {
 }
 
 class _SingleitemState extends State<Singleitem> {
+  bool clicked = true;
+  int count = 0;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -57,23 +61,95 @@ class _SingleitemState extends State<Singleitem> {
           SizedBox(
             height: 15.0,
           ),
-          Container(
-            margin: EdgeInsets.only(left: 15.0),
-            height: 50.0,
-            width: 100.0,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15.0),
-                color: Colors.red[200]),
-            child: Center(
-              child: Text(
-                "Add",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.bold),
-              ),
-            ),
-          ),
+          clicked
+              ? InkWell(
+                  onTap: () {
+                    context.read<ShoppingCart>().addItems({
+                      "title": widget.title,
+                      "price": widget.price,
+                      "category": widget.category,
+                      "image": widget.image,
+                      "quantity": 1
+                    });
+                    setState(() {
+                      if (clicked) {
+                        clicked = false;
+                      } else {
+                        clicked = true;
+                      }
+                    });
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(left: 15.0),
+                    height: 50.0,
+                    width: 100.0,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15.0),
+                        color: Colors.red[200]),
+                    child: Center(
+                      child: Text(
+                        "Add",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                )
+              : Padding(
+                  padding: const EdgeInsets.only(left: 15.0),
+                  child: Row(
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          context.read<ShoppingCart>().updateItems({
+                            "title": widget.title,
+                            "price": widget.price,
+                            "category": widget.category,
+                            "image": widget.image,
+                            "quantity": 1
+                          });
+                        },
+                        icon: Icon(Icons.add_circle_outline_rounded),
+                      ),
+                      SizedBox(
+                        width: 10.0,
+                      ),
+                      Text(context.read<ShoppingCart>().quantityRead({
+                                "title": widget.title,
+                                "price": widget.price,
+                                "category": widget.category,
+                                "image": widget.image,
+                                "quantity": 1
+                              }) ==
+                              Null
+                          ? "0"
+                          : context.read<ShoppingCart>().quantityRead({
+                              "title": widget.title,
+                              "price": widget.price,
+                              "category": widget.category,
+                              "image": widget.image,
+                              "quantity": 1
+                            })),
+                      SizedBox(
+                        width: 10.0,
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          context.read<ShoppingCart>().discriminantItems({
+                            "title": widget.title,
+                            "price": widget.price,
+                            "category": widget.category,
+                            "image": widget.image,
+                            "quantity": 1
+                          });
+                        },
+                        icon: Icon(Icons.remove_circle_outline_outlined),
+                      )
+                    ],
+                  ),
+                )
         ],
       ),
     );
