@@ -117,21 +117,12 @@ class _SingleitemState extends State<Singleitem> {
                         width: 10.0,
                       ),
                       Text(context.read<ShoppingCart>().quantityRead({
-                                "title": widget.title,
-                                "price": widget.price,
-                                "category": widget.category,
-                                "image": widget.image,
-                                "quantity": 1
-                              }) ==
-                              Null
-                          ? "0"
-                          : context.read<ShoppingCart>().quantityRead({
-                              "title": widget.title,
-                              "price": widget.price,
-                              "category": widget.category,
-                              "image": widget.image,
-                              "quantity": 1
-                            })),
+                        "title": widget.title,
+                        "price": widget.price,
+                        "category": widget.category,
+                        "image": widget.image,
+                        "quantity": 1
+                      })),
                       SizedBox(
                         width: 10.0,
                       ),
